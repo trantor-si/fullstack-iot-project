@@ -1,0 +1,1 @@
+./start-consumer.sh news

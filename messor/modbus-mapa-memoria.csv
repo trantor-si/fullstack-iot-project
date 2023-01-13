@@ -1,0 +1,46 @@
+Endereço,Registrador,Range,Unidade,Tipo / Função
+35,KVARHA_HIGH,-32768 a 32767,kVArH,Read Input Register / 04
+36,KVARHA_LOW,-999 a 999,0.1 kVArH,Read Input Register / 04
+37,KWHA_HIGH,-32768 a 32767,kWH,Read Input Register / 04
+38,KWHA_LOW,-999 a 999,0.1 kWH,Read Input Register / 04
+39,KVARHB_HIGH,-32768 a 32767,kVArH,Read Input Register / 04
+40,KVARHB_LOW,-999 a 999,0.1 kVArH,Read Input Register / 04
+41,KWHB_HIGH,-32768 a 32767,kWH,Read Input Register / 04
+42,KWHB_LOW,-999 a 999,0.1 kWH,Read Input Register / 04
+43,KVARHC_HIGH,-32768 a 32767,kVArH,Read Input Register / 04
+44,KVARHC_LOW,-999 a 999,0.1 kVArH,Read Input Register / 04
+45,KWHC_HIGH,-32768 a 32767,kWH,Read Input Register / 04
+46,KWHC_LOW,-999 a 999,0.1 kWH,Read Input Register / 04
+47,KVARHT_HIGH,-32768 a 32767,kVArH,Read Input Register / 04
+48,KVARHT_LOW,-999 a 999,0.1 kVArH,Read Input Register / 04
+49,KWHT_HIGH,-32768 a 32767,kWH,Read Input Register / 04
+50,KWHT_LOW,-999 a 999,0.1 kWH,Read Input Register / 04
+61,VA_RMS,0 a 300,V,Read Input Register / 04
+62,IA_RMS,0 a 1000,0.1 A,Read Input Register / 04
+63,VB_RMS,0 a 300,V,Read Input Register / 04
+64,IB_RMS,0 a 1000,0.1 A,Read Input Register / 04
+65,VC_RMS,0 a 300,V,Read Input Register / 04
+66,IC_RMS,0 a 1000,0.1 A,Read Input Register / 04
+67,POTENCIA_ATIVA_A,-32768 a 32767,W,Read Input Register / 04
+68,POTENCIA_ATIVA_B,-32768 a 32767,W,Read Input Register / 04
+69,POTENCIA_ATIVA_C,-32768 a 32767,W,Read Input Register / 04
+70,POTENCIA_ATIVA_T,-32768 a 32767,W,Read Input Register / 04
+71,POTENCIA_APARENTE_A,0 a 32767,VA,Read Input Register / 04
+72,POTENCIA_APARENTE_B,0 a 32767,VA,Read Input Register / 04
+73,POTENCIA_APARENTE_C,0 a 32767,VA,Read Input Register / 04
+74,POTENCIA_APARENTE_T,0 a 32767,VA,Read Input Register / 04
+75,FP_A,-1000 a 1000,0.001 FP,Read Input Register / 04
+76,FP_B,-1000 a 1000,0.001 FP,Read Input Register / 04
+77,FP_C,-1000 a 1000,0.001 FP,Read Input Register / 04
+78,FP_T,-1000 a 1000,0.001 FP,Read Input Register / 04
+79,POTENCIA_REATIVA_A,-32768 a 32767,VAr,Read Input Register / 04
+80,POTENCIA_REATIVA_B,-32768 a 32767,VAr,Read Input Register / 04
+81,POTENCIA_REATIVA_C,-32768 a 32767,VAr,Read Input Register / 04
+82,POTENCIA_REATIVA_D,-32768 a 32767,VAr,Read Input Register / 04
+83,VAB_RMS,0 a 500,V,Read Input Register / 04
+84,VBC_RMS,0 a 500,V,Read Input Register / 04
+85,VCA_RMS,0 a 500,V,Read Input Register / 04
+86,VABC_T_RMS_MEDIO,0 a 500,V,Read Input Register / 04
+87,FREQUENCIA,3000 a 10000,0.01 * Hz,Read Input Register / 04
+88,VERSAO_FIRMWARE_STM,0 a 65535,-,Read Input Register / 04
+101,TEMP_DS18B20,-550 a 1250,0.1 * ºC,Read Input Register / 04
