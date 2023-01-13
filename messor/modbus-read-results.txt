@@ -1,0 +1,370 @@
+Reading CSV file: [modbus-mapa-memoria.csv]
+    Endereço          Registrador  ...    Unidade             Tipo / Função
+0         35          KVARHA_HIGH  ...      kVArH  Read Input Register / 04
+1         36           KVARHA_LOW  ...  0.1 kVArH  Read Input Register / 04
+2         37            KWHA_HIGH  ...        kWH  Read Input Register / 04
+3         38             KWHA_LOW  ...    0.1 kWH  Read Input Register / 04
+4         39          KVARHB_HIGH  ...      kVArH  Read Input Register / 04
+5         40           KVARHB_LOW  ...  0.1 kVArH  Read Input Register / 04
+6         41            KWHB_HIGH  ...        kWH  Read Input Register / 04
+7         42             KWHB_LOW  ...    0.1 kWH  Read Input Register / 04
+8         43          KVARHC_HIGH  ...      kVArH  Read Input Register / 04
+9         44           KVARHC_LOW  ...  0.1 kVArH  Read Input Register / 04
+10        45            KWHC_HIGH  ...        kWH  Read Input Register / 04
+11        46             KWHC_LOW  ...    0.1 kWH  Read Input Register / 04
+12        47          KVARHT_HIGH  ...      kVArH  Read Input Register / 04
+13        48           KVARHT_LOW  ...  0.1 kVArH  Read Input Register / 04
+14        49            KWHT_HIGH  ...        kWH  Read Input Register / 04
+15        50             KWHT_LOW  ...    0.1 kWH  Read Input Register / 04
+16        61               VA_RMS  ...          V  Read Input Register / 04
+17        62               IA_RMS  ...      0.1 A  Read Input Register / 04
+18        63               VB_RMS  ...          V  Read Input Register / 04
+19        64               IB_RMS  ...      0.1 A  Read Input Register / 04
+20        65               VC_RMS  ...          V  Read Input Register / 04
+21        66               IC_RMS  ...      0.1 A  Read Input Register / 04
+22        67     POTENCIA_ATIVA_A  ...          W  Read Input Register / 04
+23        68     POTENCIA_ATIVA_B  ...          W  Read Input Register / 04
+24        69     POTENCIA_ATIVA_C  ...          W  Read Input Register / 04
+25        70     POTENCIA_ATIVA_T  ...          W  Read Input Register / 04
+26        71  POTENCIA_APARENTE_A  ...         VA  Read Input Register / 04
+27        72  POTENCIA_APARENTE_B  ...         VA  Read Input Register / 04
+28        73  POTENCIA_APARENTE_C  ...         VA  Read Input Register / 04
+29        74  POTENCIA_APARENTE_T  ...         VA  Read Input Register / 04
+30        75                 FP_A  ...   0.001 FP  Read Input Register / 04
+31        76                 FP_B  ...   0.001 FP  Read Input Register / 04
+32        77                 FP_C  ...   0.001 FP  Read Input Register / 04
+33        78                 FP_T  ...   0.001 FP  Read Input Register / 04
+34        79   POTENCIA_REATIVA_A  ...        VAr  Read Input Register / 04
+35        80   POTENCIA_REATIVA_B  ...        VAr  Read Input Register / 04
+36        81   POTENCIA_REATIVA_C  ...        VAr  Read Input Register / 04
+37        82   POTENCIA_REATIVA_D  ...        VAr  Read Input Register / 04
+38        83              VAB_RMS  ...          V  Read Input Register / 04
+39        84              VBC_RMS  ...          V  Read Input Register / 04
+40        85              VCA_RMS  ...          V  Read Input Register / 04
+41        86     VABC_T_RMS_MEDIO  ...          V  Read Input Register / 04
+42        87           FREQUENCIA  ...  0.01 * Hz  Read Input Register / 04
+43        88  VERSAO_FIRMWARE_STM  ...          -  Read Input Register / 04
+44       101         TEMP_DS18B20  ...   0.1 * ºC  Read Input Register / 04
+
+[45 rows x 5 columns]
+
+
+MODBUS:: READ MEMORY MAP VALUES:
+
+=============================
+Memory Map number #35: 
+	Registrador: KVARHA_HIGH
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: kVArH
+	Valor: 0
+=============================
+Memory Map number #36: 
+	Registrador: KVARHA_LOW
+	Tipo / Função: Read Input Register / 04
+	Range: -999 a 999
+	Unidade: 0.1 kVArH
+	Valor: 65520
+=============================
+Memory Map number #37: 
+	Registrador: KWHA_HIGH
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: kWH
+	Valor: 0
+=============================
+Memory Map number #38: 
+	Registrador: KWHA_LOW
+	Tipo / Função: Read Input Register / 04
+	Range: -999 a 999
+	Unidade: 0.1 kWH
+	Valor: 363
+=============================
+Memory Map number #39: 
+	Registrador: KVARHB_HIGH
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: kVArH
+	Valor: 0
+=============================
+Memory Map number #40: 
+	Registrador: KVARHB_LOW
+	Tipo / Função: Read Input Register / 04
+	Range: -999 a 999
+	Unidade: 0.1 kVArH
+	Valor: 65518
+=============================
+Memory Map number #41: 
+	Registrador: KWHB_HIGH
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: kWH
+	Valor: 0
+=============================
+Memory Map number #42: 
+	Registrador: KWHB_LOW
+	Tipo / Função: Read Input Register / 04
+	Range: -999 a 999
+	Unidade: 0.1 kWH
+	Valor: 365
+=============================
+Memory Map number #43: 
+	Registrador: KVARHC_HIGH
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: kVArH
+	Valor: 0
+=============================
+Memory Map number #44: 
+	Registrador: KVARHC_LOW
+	Tipo / Função: Read Input Register / 04
+	Range: -999 a 999
+	Unidade: 0.1 kVArH
+	Valor: 65524
+=============================
+Memory Map number #45: 
+	Registrador: KWHC_HIGH
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: kWH
+	Valor: 0
+=============================
+Memory Map number #46: 
+	Registrador: KWHC_LOW
+	Tipo / Função: Read Input Register / 04
+	Range: -999 a 999
+	Unidade: 0.1 kWH
+	Valor: 282
+=============================
+Memory Map number #47: 
+	Registrador: KVARHT_HIGH
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: kVArH
+	Valor: 0
+=============================
+Memory Map number #48: 
+	Registrador: KVARHT_LOW
+	Tipo / Função: Read Input Register / 04
+	Range: -999 a 999
+	Unidade: 0.1 kVArH
+	Valor: 65490
+=============================
+Memory Map number #49: 
+	Registrador: KWHT_HIGH
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: kWH
+	Valor: 1
+=============================
+Memory Map number #50: 
+	Registrador: KWHT_LOW
+	Tipo / Função: Read Input Register / 04
+	Range: -999 a 999
+	Unidade: 0.1 kWH
+	Valor: 10
+=============================
+Memory Map number #61: 
+	Registrador: VA_RMS
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 300
+	Unidade: V
+	Valor: 0
+=============================
+Memory Map number #62: 
+	Registrador: IA_RMS
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 1000
+	Unidade: 0.1 A
+	Valor: 0
+=============================
+Memory Map number #63: 
+	Registrador: VB_RMS
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 300
+	Unidade: V
+	Valor: 0
+=============================
+Memory Map number #64: 
+	Registrador: IB_RMS
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 1000
+	Unidade: 0.1 A
+	Valor: 0
+=============================
+Memory Map number #65: 
+	Registrador: VC_RMS
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 300
+	Unidade: V
+	Valor: 0
+=============================
+Memory Map number #66: 
+	Registrador: IC_RMS
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 1000
+	Unidade: 0.1 A
+	Valor: 0
+=============================
+Memory Map number #67: 
+	Registrador: POTENCIA_ATIVA_A
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: W
+	Valor: 0
+=============================
+Memory Map number #68: 
+	Registrador: POTENCIA_ATIVA_B
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: W
+	Valor: 0
+=============================
+Memory Map number #69: 
+	Registrador: POTENCIA_ATIVA_C
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: W
+	Valor: 0
+=============================
+Memory Map number #70: 
+	Registrador: POTENCIA_ATIVA_T
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: W
+	Valor: 0
+=============================
+Memory Map number #71: 
+	Registrador: POTENCIA_APARENTE_A
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 32767
+	Unidade: VA
+	Valor: 0
+=============================
+Memory Map number #72: 
+	Registrador: POTENCIA_APARENTE_B
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 32767
+	Unidade: VA
+	Valor: 0
+=============================
+Memory Map number #73: 
+	Registrador: POTENCIA_APARENTE_C
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 32767
+	Unidade: VA
+	Valor: 0
+=============================
+Memory Map number #74: 
+	Registrador: POTENCIA_APARENTE_T
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 32767
+	Unidade: VA
+	Valor: 0
+=============================
+Memory Map number #75: 
+	Registrador: FP_A
+	Tipo / Função: Read Input Register / 04
+	Range: -1000 a 1000
+	Unidade: 0.001 FP
+	Valor: 1000
+=============================
+Memory Map number #76: 
+	Registrador: FP_B
+	Tipo / Função: Read Input Register / 04
+	Range: -1000 a 1000
+	Unidade: 0.001 FP
+	Valor: 1000
+=============================
+Memory Map number #77: 
+	Registrador: FP_C
+	Tipo / Função: Read Input Register / 04
+	Range: -1000 a 1000
+	Unidade: 0.001 FP
+	Valor: 1000
+=============================
+Memory Map number #78: 
+	Registrador: FP_T
+	Tipo / Função: Read Input Register / 04
+	Range: -1000 a 1000
+	Unidade: 0.001 FP
+	Valor: 1000
+=============================
+Memory Map number #79: 
+	Registrador: POTENCIA_REATIVA_A
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: VAr
+	Valor: 0
+=============================
+Memory Map number #80: 
+	Registrador: POTENCIA_REATIVA_B
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: VAr
+	Valor: 0
+=============================
+Memory Map number #81: 
+	Registrador: POTENCIA_REATIVA_C
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: VAr
+	Valor: 0
+=============================
+Memory Map number #82: 
+	Registrador: POTENCIA_REATIVA_D
+	Tipo / Função: Read Input Register / 04
+	Range: -32768 a 32767
+	Unidade: VAr
+	Valor: 0
+=============================
+Memory Map number #83: 
+	Registrador: VAB_RMS
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 500
+	Unidade: V
+	Valor: 1
+=============================
+Memory Map number #84: 
+	Registrador: VBC_RMS
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 500
+	Unidade: V
+	Valor: 1
+=============================
+Memory Map number #85: 
+	Registrador: VCA_RMS
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 500
+	Unidade: V
+	Valor: 1
+=============================
+Memory Map number #86: 
+	Registrador: VABC_T_RMS_MEDIO
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 500
+	Unidade: V
+	Valor: 1
+=============================
+Memory Map number #87: 
+	Registrador: FREQUENCIA
+	Tipo / Função: Read Input Register / 04
+	Range: 3000 a 10000
+	Unidade: 0.01 * Hz
+	Valor: 1596
+=============================
+Memory Map number #88: 
+	Registrador: VERSAO_FIRMWARE_STM
+	Tipo / Função: Read Input Register / 04
+	Range: 0 a 65535
+	Unidade: -
+	Valor: 301
+=============================
+Memory Map number #101: 
+	Registrador: TEMP_DS18B20
+	Tipo / Função: Read Input Register / 04
+	Range: -550 a 1250
+	Unidade: 0.1 * ºC
+	Valor: 16352
+=============================
+MODBUS:: READ MEMORY MAP FINISHED!
