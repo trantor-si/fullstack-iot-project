@@ -1,1 +1,0 @@
-./start-producer.sh news

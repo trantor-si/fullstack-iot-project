@@ -1,1 +1,0 @@
-./create-a-topic.sh news

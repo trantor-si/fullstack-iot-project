@@ -2,96 +2,83 @@
 # "pip install kafka-python"
 
 import json
-from kafka import KafkaConsumer, KafkaProducer
-from kafka.admin import KafkaAdminClient, NewTopic, ConfigResource, ConfigResourceType
-import uuid
+import logging
+import random
+import time
 
-# create KafkaAdminClient - class is to enable fundamental administrative 
-# management operations on kafka server such as creating/deleting topic, 
-# retrieving, and updating topic configurations and so on.
-
-# 1) bootstrap_servers="localhost:9092" argument specifies the host/IP and port 
-# that the consumer should contact to bootstrap initial cluster metadata
-# 2) client_id specifies an id of current admin client
-
-admin_client = KafkaAdminClient(bootstrap_servers="localhost:9092", client_id='test')
-
-# Create new topics - Next, the most common usage of admin_client is managing 
-# topics such as creating and deleting topics. To create new topics, we first 
-# need to define an empty topic list:
-topic_list = []
-
-# Then we use the NewTopic class to create a topic with name equals bankbranch,
-# partition nums equals to 2, and replication factor equals to 1.
-# topicname = uuid.uuid4().__str__()
-topicname = "bankbranch"
-# new_topic = NewTopic(name=topicname, num_partitions= 2, replication_factor=1)
-# topic_list.append(new_topic)
-
-# At last, we can use create_topics(...) method to create new topics:
-# equivalent to:
-# "kafka-topics.sh --bootstrap-server localhost:9092 --create --topic bankbranch  --partitions 2 --replication_factor 1"
-# admin_client.create_topics(new_topics=topic_list)
+from confluent_kafka import Producer
+from env import EXIT_CODE
+from faker import Faker
 
 
-# Describe a topic - Once new topics are created, we can easily check its 
-# configuration details using describe_configs() method
-configs = admin_client.describe_configs(
-    config_resources=[ConfigResource(ConfigResourceType.TOPIC, topicname)])
+def get_data_dict():
+    data_dict = {}
+    fake = Faker()
+    
+    for i in range(random.randint(10,20)):
+        data_dict[i] = {
+           'user_id': fake.random_int(min=20000, max=100000),
+           'user_name':fake.name(),
+           'user_address':fake.street_address() + ' | ' + fake.city() + ' | ' + fake.country_code(),
+           'platform': random.choice(['Mobile', 'Laptop', 'Tablet']),
+           'signup_at': str(fake.date_time_this_month())    
+        }
 
-# Above describe topic operation is equivalent to using kafka-topics.sh --describe in Kafka CLI client:
-# "kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic bankbranch"
+    return data_dict
 
-# ############################
-# PRODUCER
-# ############################
+def configure ():
+    global fake
+    fake = Faker()
 
-# KafkaProducer - Now we have a new bankbranch topic created, we can start 
-# produce messages to the topic. For kafka-python, we will use KafkaProducer 
-# class to produce messages. Since many real-world message values are in the 
-# format of JSON, we will show you how to publish JSON messages as an example.
-# First, let’s define and create a KafkaProducer:
-producer = KafkaProducer(value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+    logging.basicConfig(format='%(asctime)s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        filename='iot-producer.log',
+                        maxBytes=5*1024*1024,
+                        backupCount=5,
+                        filemode='w')
 
-# Since Kafka produces and consumes messages in raw bytes, we need to encode 
-# our JSON messages and serialize them into bytes. For the value_serializer 
-# argument, we define a lambda function to take a Python dict/list object and
-# serialize it into bytes. Then, with the KafkaProducer created, we can use it 
-# to produce two ATM transaction messages in JSON format as follows:
-producer.send(topicname, {'atmid':29, 'transid':1966})
-producer.send(topicname, {'atmid':18, 'transid':1974})
+    global logger
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
 
-# The first argument specifies the topic bankbranch to be sent, and the second 
-# argument represents the message value in a Python dict format and will be 
-# serialized into bytes. 
+def create_producer(
+    server : str = 'localhost:9092', producer_topic : str = 'iot-topic', 
+    group_id: str = 'iot-group', kind : str = 'earliest'):
+    
+    logger.info('Initialization Kafka Producer...')
+    global producer
+    producer = Producer({'bootstrap.servers': server})
+    logger.info('Kafka Producer has been initiated!')
 
-# The above producing message operation is equivalent to using 
-# kafka-console-producer.sh --topic in Kafka CLI client:
-# "kafka-console-producer.sh --bootstrap-server localhost:9092 --topic bankbranch"
-
-
-
-# ############################
-# CONSUMER
-# ############################
-
-# In the previous step, we published two JSON messages. Now we can use the 
-# KafkaConsumer class to consume them. We just need to define and create a 
-# KafkaConsumer subscribing to the topic bankbranch:
-consumer = KafkaConsumer(topicname, bootstrap_servers=['localhost:9092'], 
-    auto_offset_reset='earliest', enable_auto_commit=True, group_id='my-group', 
-    value_deserializer=lambda x: json.loads(x.decode('utf-8')))
-
-# Once the consumer is created, it will receive all available messages from 
-# the topic bankbranch. Then we can iterate and print them with the following 
-# code snippet:
-print('Consuming messages from topic {}'.format(topicname))
-for msg in consumer:
-    print(msg.value)
-
-# for msg in consumer:
-#     print(msg.value.decode("utf-8"))
-
-# The above consuming message operation is equivalent to using 
-# kafka-console-consumer.sh --topic in Kafka CLI client:
-# "kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic bankbranch"
+def receipt(err,msg):
+    if err is not None:
+        print('Error: {}'.format(err))
+    else:
+        message = 'Produced message on topic {} with value of {}'.format(msg.topic(), msg.value().decode('utf-8'))
+        logger.info(message)
+        print(message)
+        
+def run_kafka_producer(
+    server : str = 'localhost:9092', producer_topic : str = 'iot-topic', 
+    group_id: str = 'iot-group', kind : str = 'earliest', data_dict : dict = {}):
+    
+    configure()
+    create_producer(server, producer_topic, group_id, kind)
+    
+    # test if data_dict is empty
+    if data_dict == {}:
+        data_dict = get_data_dict()
+    
+    for data in data_dict.values():
+        print ('\n\n\nData: ', data)
+        message=json.dumps(data)
+        
+        producer.poll(0)
+        producer.produce(producer_topic, message.encode('utf-8'), callback=receipt)
+        producer.flush()
+        
+    # producer.produce(producer_topic, EXIT_CODE.encode('utf-8'), callback=receipt)
+    # producer.flush()
+        
+if __name__ == '__main__':
+    run_kafka_producer()

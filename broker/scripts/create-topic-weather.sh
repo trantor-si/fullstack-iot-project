@@ -1,1 +1,0 @@
-./create-a-topic-with-partitions.sh weather 2
