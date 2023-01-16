@@ -9,7 +9,7 @@ from uuid import uuid4
 
 from confluent_kafka import Producer
 from confluent_kafka.serialization import StringSerializer
-from env import EXIT_CODE, EXIT_CODE_DICT
+from env import EXIT_CODE
 from faker import Faker
 
 
@@ -37,32 +37,23 @@ def create_logger (filename: str = 'iot-producer.log'):
     global logger
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-    
-    log ('Logger [{}] has been initiated!'.format(filename))
-
-def log (message, type = 'info'):
-    if type == 'error':
-        logger.error(message)
-        print ('Error: {}'.format(message))
-    else:
-        logger.info(message)
-        print ('Info: {}'.format(message))
 
 def create_producer(
     server : str = 'localhost:9092', producer_topic : str = 'iot-topic', 
     group_id: str = 'iot-group', kind : str = 'earliest'):
     
-    log('Initialization Kafka Producer...')
+    logger.info('Initialization Kafka Producer...')
     producer = Producer({'bootstrap.servers': server})
-    log('Kafka Producer has been initiated!')
+    logger.info('Kafka Producer has been initiated!')
     return producer
 
 def receipt(err,msg):
     if err is not None:
-        log('{}'.format(err), 'error')
+        print('Error: {}'.format(err))
     else:
         message = 'Produced message on topic [{}] with value of [{}] and type [{}]'.format(msg.topic(), msg.value().decode('utf-8'),type(msg))
-        log(message)
+        logger.info(message)
+        print(message)
         
 def delivery_report(err, msg):
     """
@@ -73,10 +64,10 @@ def delivery_report(err, msg):
     """
 
     if err is not None:
-        log("Delivery failed for User record [{}]: [{}]".format(msg.key(), err), 'error')
+        logger.error("Delivery failed for User record [{}]: [{}]".format(msg.key(), err))
         return
     
-    log('User record [{}] successfully produced to topic [{}], partition [{}], at offset [{}]'.format(
+    logger.info('User record [{}] successfully produced to topic [{}], partition [{}], at offset [{}]'.format(
         msg.key(), msg.topic(), msg.partition(), msg.offset()))
 
 def send_a_message(data, producer, string_serializer, producer_topic):
@@ -102,12 +93,25 @@ def run_kafka_producer(
     
     string_serializer = StringSerializer('utf_8')
     for data in data_dict.values():
+        # message=json.dumps(data)
+        # print ('Message: [{}], type: [{}]'.format(message, type(message)))
+        
+        # producer.poll(0)
         send_a_message(data, producer, string_serializer, producer_topic)
+        # producer.produce(
+        #     topic=producer_topic, 
+        #     key=string_serializer(str(uuid4()), None),
+        #     value=message, 
+        #     callback=receipt,
+        #     on_delivery=delivery_report
+        # )
+        #producer.flush()
 
     # send exit code
     send_a_message(json.dumps(EXIT_CODE), producer, string_serializer, producer_topic)
-
-    log('Producer has been successfuly closed!')
+    # producer.produce(producer_topic, EXIT_CODE, callback=receipt)
+    # producer.flush()
+    logger.info('Producer has been successfuly closed!')
         
 if __name__ == '__main__':
     run_kafka_producer()

@@ -11,31 +11,39 @@ import pandas as pd
 from producer import run_kafka_producer
 from pyModbusTCP.client import ModbusClient
 
-host = "localhost"
+# host = "localhost"
 
 def read_csv (csvfile: str) -> pd.DataFrame:
     df = pd.read_csv(csvfile, sep=',', header='infer')
     return df
 
-def configure (): 
+def create_logger (filename: str = 'iot-messor.log'): 
     logging.basicConfig(format='%(asctime)s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
-                        filename='iot-messor.log',
-                        maxBytes=5*1024*1024,
-                        backupCount=5,
+                        filename=filename,
                         filemode='w')
 
     global logger
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     
+    log ('Logger [{}] has been initiated!'.format(filename))
+    
+def log (message, type = 'info'):
+    if type == 'error':
+        logger.error(message)
+        print ('Error: {}'.format(message))
+    else:
+        logger.info(message)
+        print ('Info: {}'.format(message))
+
 def modbus_read(modbus_client: ModbusClient, df: pd.DataFrame) -> dict:
     if modbus_client is None:
-        print("modbus_read: modbus_client is None!\n")
+        log("modbus_read: modbus_client is None!\n")
         return None
       
     if df is None:
-        print("modbus_read: Dataframe is None!\n")
+        log("modbus_read: Dataframe is None!\n")
         return None
 
     # store dataframe in a list 
@@ -71,34 +79,49 @@ def run_messor(
   modbus_host: str = "192.168.1.1", 
   port: int = 502,
   csv_file: str = "modbus-mapa-memoria.csv", 
-  csv_file_result: str = "modbus-mapa-memoria-result.csv"): 
+  csv_file_result: str = "modbus-mapa-memoria-result.csv",
+  num_cycles: int = 1): 
 
-  configure()
+  # get information from program arguments
+  if len(sys.argv) > 1:
+    if sys.argv[1] != "-": modbus_host = sys.argv[1]
+    if sys.argv[2] != "-": port = int(sys.argv[2])
+    if sys.argv[3] != "-": csv_file = sys.argv[3]
+    if sys.argv[4] != "-": csv_file_result = sys.argv[4]
+    if sys.argv[5] != "-": num_cycles = int(sys.argv[5])
   
-  logger.info('Reading CSV file: [{}]'.format(csv_file))
+  create_logger()
+  
+  # log the arguments summary
+  log('Arguments summary:')
+  log('Modbus host: [{}]'.format(modbus_host))
+  log('Port: [{}]'.format(port))
+  log('CSV file: [{}]'.format(csv_file))
+  log('CSV file result: [{}]'.format(csv_file_result))
+  log('Number of cycles: [{}]'.format(num_cycles))
+  
+  log('Reading CSV file: [{}]'.format(csv_file))
   df = read_csv(csv_file)
   if df is not None:
-    logger.info(df)
+    logger.info('\n{}'.format(df))
 
     # create modbus client
-    logger.info('Creating Modbus client...')
+    log('Creating Modbus client...')
     modbus_client = ModbusClient(host=modbus_host, port=port, unit_id=1, auto_open=True)
 
     if not modbus_client.open():
-      logger.error('Unable to connect to host: [{}], port: [{}]. End of execution.'.format(modbus_host,port))
+      log('Unable to connect to host: [{}], port: [{}]. End of execution!'.format(modbus_host,port))
     else:
       list_memmaps = modbus_read(modbus_client, df)
 
       if list_memmaps is not None:
           with open(csv_file_result, 'a') as f:
-              # write header
               f.write('Timestamp,Device,Endereço,Registrador,Range,Unidade,Tipo / Função,Valor')
               f.write('\n')
 
-              while True:
-                print ("=============================")
-                print ("MODBUS:: READ MEMORY MAP VALUES:")
-                logger.info("MODBUS:: READ MEMORY MAP VALUES:")
+              for i in range(num_cycles):
+                log ('=============================')
+                log ('[#{}#] READ MODBUS MEMORY MAP VALUES:'.format(i+1))
                 
                 broker_dict = {}
                 for memmap in list_memmaps:
@@ -115,23 +138,13 @@ def run_messor(
                       str(memmap['Valor']))
                     f.write('\n')
                     
-                    logger.info("=============================")
-
-                    logger.info('Memory Map number #{}: '.format(memmap['Endereço']))
-                    logger.info('\tRegistrador: {}'.format(memmap['Registrador']))
-                    logger.info('\tTipo / Função: {}'.format(memmap['Tipo / Função']))
-                    logger.info('\tRange: {}'.format(memmap['Range']))
-                    logger.info('\tUnidade: {}'.format(memmap['Unidade']))
-                    logger.info('\tValor: {}'.format(memmap['Valor']))
-                    
-                    print("=============================")
-
-                    print('Memory Map number #{}: '.format(memmap['Endereço']))
-                    print('\tRegistrador: {}'.format(memmap['Registrador']))
-                    print('\tTipo / Função: {}'.format(memmap['Tipo / Função']))
-                    print('\tRange: {}'.format(memmap['Range']))
-                    print('\tUnidade: {}'.format(memmap['Unidade']))
-                    print('\tValor: {}'.format(memmap['Valor']))
+                    log("=============================")
+                    log('Memory Map number #{}: '.format(memmap['Endereço']))
+                    log('\tRegistrador: {}'.format(memmap['Registrador']))
+                    log('\tTipo / Função: {}'.format(memmap['Tipo / Função']))
+                    log('\tRange: {}'.format(memmap['Range']))
+                    log('\tUnidade: {}'.format(memmap['Unidade']))
+                    log('\tValor: {}'.format(memmap['Valor']))
                     
                     record_dict['timestamp'] = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
                     record_dict['device'] = 'messor'
@@ -143,17 +156,14 @@ def run_messor(
                     record_dict['Valor'] = str(memmap['Valor'])
                     
                     # append to broker list
-                    print (record_dict)
                     broker_dict[str(memmap['Endereço'])] = record_dict
 
-                logger.info("=============================")
-                print("=============================")
+                log("=============================")
 
                 run_kafka_producer(data_dict=broker_dict)
-                time.sleep(5)
 
-          f.close()
-          logger.info("MODBUS:: READ MEMORY MAP FINISHED!")
+              f.close()
+              logger.info("MODBUS:: READ MEMORY MAP FINISHED!")
 
       else:
           logger.error("MODBUS:: READ MEMORY MAP ERROR. End of execution.")

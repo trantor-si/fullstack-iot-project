@@ -1,1 +1,2 @@
 EXIT_CODE = '-= EXIT =-'
+EXIT_CODE_DICT = {'code':EXIT_CODE}

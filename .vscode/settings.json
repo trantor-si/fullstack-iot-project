@@ -1,0 +1,17 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "trantor-iot.ckgmtqg1pqui.sa-east-1.rds.amazonaws.com",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "Trantor-IoT",
+      "database": "messor",
+      "username": "postgres",
+      "password": "trantor1"
+    }
+  ],
+  "python.analysis.extraPaths": [
+    "./broker"
+  ]
+}
