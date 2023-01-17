@@ -9,6 +9,10 @@ import time
 from confluent_kafka import Consumer
 from env import EXIT_CODE
 
+show_broker_consumer_logs = True
+def set_show_broker_consumer_logs(value : bool):
+    global show_broker_consumer_logs
+    show_broker_consumer_logs = value
 
 def create_logger (filename: str = 'iot-consumer.log', silent: bool = False):
     logging.basicConfig(format='%(asctime)s %(message)s',
@@ -16,21 +20,22 @@ def create_logger (filename: str = 'iot-consumer.log', silent: bool = False):
                         filename=filename,
                         filemode='w')
 
-    global logger
+    global broker_consumer_logger
     global silent_logger
     silent_logger = silent
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
+    broker_consumer_logger = logging.getLogger()
+    broker_consumer_logger.setLevel(logging.INFO)
     
     log ('Logger [{}] has been initiated!'.format(filename))
 
 def log (message, type = 'info'):
-    if type == 'error':
-        logger.error(message)
-        if (not silent_logger): print ('Error: {}'.format(message))
-    else:
-        logger.info(message)
-        if (not silent_logger): print ('Info: {}'.format(message))
+    if show_broker_consumer_logs:
+        if type == 'error':
+            broker_consumer_logger.error(message)
+            if (not silent_logger): print ('Error: {}'.format(message))
+        else:
+            broker_consumer_logger.info(message)
+            if (not silent_logger): print ('Info: {}'.format(message))
 
 def create_consumer(server, consumer_topic, group_id, offset):
     log('Initialization Kafka Consumer...')

@@ -12,6 +12,10 @@ from confluent_kafka.serialization import StringSerializer
 from env import EXIT_CODE, EXIT_CODE_DICT
 from faker import Faker
 
+show_broker_producer_logs = True
+def set_show_broker_producer_logs(value : bool):
+    global show_broker_producer_logs
+    show_broker_producer_logs = value
 
 def get_data_dict():
     data_dict = {}
@@ -34,27 +38,26 @@ def create_logger (filename: str = 'iot-producer.log'):
                         filename=filename,
                         filemode='w')
 
-    global logger
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
+    global broker_producer_logger
+    broker_producer_logger = logging.getLogger()
+    broker_producer_logger.setLevel(logging.INFO)
     
     log ('Logger [{}] has been initiated!'.format(filename))
 
 def log (message, type = 'info'):
-    if type == 'error':
-        logger.error(message)
-        print ('Error: {}'.format(message))
-    else:
-        logger.info(message)
-        print ('Info: {}'.format(message))
+    if show_broker_producer_logs:
+        if type == 'error':
+            broker_producer_logger.error(message)
+            print ('Error: {}'.format(message))
+        else:
+            broker_producer_logger.info(message)
+            print ('Info: {}'.format(message))
 
 def create_producer(
     server : str = 'localhost:9092', producer_topic : str = 'iot-topic', 
     group_id: str = 'iot-group', kind : str = 'earliest'):
     
-    log('Initialization Kafka Producer...')
     producer = Producer({'bootstrap.servers': server})
-    log('Kafka Producer has been initiated!')
     return producer
 
 def receipt(err,msg):
@@ -94,9 +97,16 @@ def run_kafka_producer(
     group_id: str = 'iot-group', kind : str = 'earliest', data_dict : dict = {}):
     
     create_logger()
+
     producer = create_producer(server, producer_topic, group_id, kind)
+    if producer is None:
+        log('Producer could not be created!', 'error')
+        return
     
-    # test if data_dict is empty
+    log('=============================')
+    log('KAFKA Producer started.')
+    log('=============================')
+    
     if data_dict == {}:
         data_dict = get_data_dict()
     
@@ -104,10 +114,11 @@ def run_kafka_producer(
     for data in data_dict.values():
         send_a_message(data, producer, string_serializer, producer_topic)
 
-    # send exit code
     send_a_message(json.dumps(EXIT_CODE), producer, string_serializer, producer_topic)
 
-    log('Producer has been successfuly closed!')
+    log('=============================')
+    log('KAFKA Producer Ended.')
+    log('=============================')
         
 if __name__ == '__main__':
     run_kafka_producer()
